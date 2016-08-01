@@ -147,6 +147,7 @@
     <ClInclude Include="ChunkHeader.h" />
     <ClInclude Include="FileEntry.h" />
     <ClInclude Include="GobHeader.h" />
+    <ClInclude Include="util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChunkHeader.cpp" />
