@@ -14,6 +14,8 @@ public:
 	uint32_t nextChunk;
 	uint32_t fileTypeFlags;
 	uint32_t unk001;
+
+	const static uint32_t CHUNK_END = 0x7fff;
 };
 
 #endif

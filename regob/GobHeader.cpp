@@ -1,5 +1,6 @@
 #include "GobHeader.h"
 
+#include <algorithm>
 #include <iostream>
 #include "util.h"
 
@@ -13,6 +14,23 @@ GobHeader::GobHeader()
 
 GobHeader::~GobHeader()
 {
+}
+
+std::vector<std::vector<ChunkHeader>> GobHeader::GetFileChunks()
+{
+	std::vector<std::vector<ChunkHeader>> result;
+	std::for_each(this->fileEntries.cbegin(), this->fileEntries.cend(), [this, &result](FileEntry entry) {
+		std::vector<ChunkHeader> fileChunks;
+		unsigned int nextChunk = entry.firstChunk;
+
+		while (nextChunk != ChunkHeader::CHUNK_END) {
+			auto chunk = this->chunkHeaders[nextChunk];
+			nextChunk = chunk.nextChunk;
+			fileChunks.push_back(chunk);
+		}
+		result.push_back(fileChunks);
+	});
+	return result;
 }
 
 GobHeader* GobHeader::FromStream(std::istream& in)
@@ -45,10 +63,10 @@ GobHeader* GobHeader::FromStream(std::istream& in)
 	}
 
 	// Sanity check: last entry in chunkHeaders should have nextChunk = 0x7fff
-
-	for (auto iter = result->chunkHeaders.begin(); iter != result->chunkHeaders.end(); iter++) {
-		iter->unk001 = readTypeBE<uint32_t>(in);
-	}
+	std::transform(result->chunkHeaders.begin(), result->chunkHeaders.end(), result->chunkHeaders.begin(), [&in](ChunkHeader h) {
+		h.unk001 = readTypeBE<uint32_t>(in);
+		return h;
+	});
 
 	for (unsigned int i = 0; i < result->fileCount; i++) {
 		auto fileEntry = FileEntry();
@@ -56,6 +74,8 @@ GobHeader* GobHeader::FromStream(std::istream& in)
 		fileEntry.nameChecksum = readTypeBE<uint32_t>(in);
 		fileEntry.fileSize = readTypeBE<uint32_t>(in);
 		fileEntry.firstChunk = readTypeBE<uint32_t>(in);
+
+		result->fileEntries.push_back(fileEntry);
 	}
 
 	return result;

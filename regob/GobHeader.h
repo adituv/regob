@@ -11,11 +11,12 @@
 class GobHeader
 {
 public:
-	GobHeader();
 	~GobHeader();
+	std::vector<std::vector<ChunkHeader>> GetFileChunks();
 
 	static GobHeader* FromStream(std::istream& in);
 private:
+	GobHeader();
 	uint32_t dataFileSize;
 	uint32_t chunkCount;
 	uint32_t fileCount;
