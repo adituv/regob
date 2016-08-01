@@ -15,30 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GobHeader.h">
+    <ClInclude Include="include\ChunkHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChunkHeader.h">
+    <ClInclude Include="include\FileEntry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileEntry.h">
+    <ClInclude Include="include\GobHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util.h">
+    <ClInclude Include="include\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GobHeader.cpp">
+    <ClCompile Include="src\ChunkHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\FileEntry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChunkHeader.cpp">
+    <ClCompile Include="src\GobHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileEntry.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
