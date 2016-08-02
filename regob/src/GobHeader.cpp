@@ -16,21 +16,17 @@ GobHeader::~GobHeader()
 {
 }
 
-std::vector<std::vector<ChunkHeader>> GobHeader::GetFileChunks()
+std::vector<ChunkHeader> GobHeader::GetFileChunks(const FileEntry& file)
 {
-	std::vector<std::vector<ChunkHeader>> result;
-	std::for_each(this->fileEntries.cbegin(), this->fileEntries.cend(), [this, &result](FileEntry entry) {
-		std::vector<ChunkHeader> fileChunks;
-		unsigned int nextChunk = entry.firstChunk;
+	std::vector<ChunkHeader> fileChunks;
+	unsigned int nextChunk = file.firstChunk;
 
-		while (nextChunk != ChunkHeader::CHUNK_END) {
-			auto chunk = this->chunkHeaders[nextChunk];
-			nextChunk = chunk.nextChunk;
-			fileChunks.push_back(chunk);
-		}
-		result.push_back(fileChunks);
-	});
-	return result;
+	while (nextChunk != ChunkHeader::CHUNK_END) {
+		auto chunk = this->chunkHeaders[nextChunk];
+		nextChunk = chunk.nextChunk;
+		fileChunks.push_back(chunk);
+	}
+	return fileChunks;
 }
 
 GobHeader* GobHeader::FromStream(std::istream& in)
@@ -41,10 +37,7 @@ GobHeader* GobHeader::FromStream(std::istream& in)
 	magic = readTypeBE<uint32_t>(in);
 
 	if (magic != 0x00008008) {
-		cerr << "Invalid header magic number!";
-
-		// TODO: replace with exception?
-		return nullptr;
+		throw exception("Invalid header magic number.");
 	}
 
 	result->dataFileSize = readTypeBE<uint32_t>(in);

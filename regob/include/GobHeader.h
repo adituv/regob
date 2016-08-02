@@ -12,7 +12,9 @@ class GobHeader
 {
 public:
 	~GobHeader();
-	std::vector<std::vector<ChunkHeader>> GetFileChunks();
+	std::vector<ChunkHeader> GetFileChunks(const FileEntry& file);
+
+	std::vector<FileEntry> fileEntries;
 
 	static GobHeader* FromStream(std::istream& in);
 private:
@@ -22,7 +24,6 @@ private:
 	uint32_t fileCount;
 
 	std::vector<ChunkHeader> chunkHeaders;
-	std::vector<FileEntry> fileEntries;
 };
 
 #endif
